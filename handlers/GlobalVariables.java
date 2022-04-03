@@ -1,6 +1,6 @@
 import java.io.File;
 
-public class global_variables {
+public class GlobalVariables {
 	
 	public static File collection_location = new File("dataset/");
 	public static Object[] createTuple(Object[] left_node, Object[] right_node) {
