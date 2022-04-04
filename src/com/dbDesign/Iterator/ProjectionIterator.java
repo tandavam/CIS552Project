@@ -16,16 +16,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-public class Projection_Iterator implements DB_Iterator {
+public class ProjectionIterator implements DbIterator {
 
-    final DB_Iterator op;
+    final DbIterator op;
     final Table table;
     ArrayList<SelectItem> to_keep;
     final HashMap<String, Integer> schema;
     final boolean allColumns;
     Object[] row;
 
-    public Projection_Iterator(DB_Iterator op, List<SelectItem> p, Table table, boolean allColumns) {
+    public ProjectionIterator(DbIterator op, List<SelectItem> p, Table table, boolean allColumns) {
 
         this.op = op;
         this.row = new Object[p.size()];

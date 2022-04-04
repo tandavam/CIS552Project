@@ -7,12 +7,12 @@ import net.sf.jsqlparser.schema.Table;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class Aggregate_Iterator implements DB_Iterator {
-    final DB_Iterator oper;
+public class AggregateIterator implements DbIterator {
+    final DbIterator oper;
     final ArrayList<Function> aggregator;
     final Table table;
 
-    public Aggregate_Iterator(DB_Iterator oper, ArrayList<Function> aggregator, Table table) {
+    public AggregateIterator(DbIterator oper, ArrayList<Function> aggregator, Table table) {
         this.oper = oper;
         this.aggregator = aggregator;
         this.table = table;

@@ -5,7 +5,7 @@ import net.sf.jsqlparser.schema.Table;
 import java.sql.SQLException;
 
 
-public interface DB_Iterator {
+public interface DbIterator {
 
     void reset();
 

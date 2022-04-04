@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class Distinct_Iterator implements DB_Iterator {
+public class DistinctIterator implements DbIterator {
 
-    private final DB_Iterator DB_Iterator;
+    private final DbIterator DB_Iterator;
     private final HashSet<List<Object>> buffer = new HashSet<>();
 
-    public Distinct_Iterator(DB_Iterator DB_Iterator) {
+    public DistinctIterator(DbIterator DB_Iterator) {
         this.DB_Iterator = DB_Iterator;
     }
 

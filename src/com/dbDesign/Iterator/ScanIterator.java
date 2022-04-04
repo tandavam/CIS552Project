@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Scan_Iterator implements DB_Iterator {
+public class ScanIterator implements DbIterator {
     final Table table;
     private final boolean full;
     File file;
@@ -27,14 +27,14 @@ public class Scan_Iterator implements DB_Iterator {
     Iterator scan = null;
     private List<CSVRecord> data;
 
-    public Scan_Iterator(File f, Table table) {
+    public ScanIterator(File f, Table table) {
         this.file = f;
         this.table = table;
         this.full = false;
         reset();
     }
 
-    public Scan_Iterator(File f, Table table, boolean full) {
+    public ScanIterator(File f, Table table, boolean full) {
         this.file = f;
         this.table = table;
         this.full = full;

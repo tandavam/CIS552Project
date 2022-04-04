@@ -3,8 +3,8 @@ package com.dbDesign.StatementParser;
 
 import com.dbDesign.GlobalVariables;
 import com.dbDesign.Execute;
-import com.dbDesign.Iterator.DB_Iterator;
-import com.dbDesign.Iterator.Scan_Iterator;
+import com.dbDesign.Iterator.DbIterator;
+import com.dbDesign.Iterator.ScanIterator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.*;
@@ -56,9 +56,9 @@ public class SQLSelect {
         }
     }
 
-    public static DB_Iterator get_iterator(PlainSelect body) throws SQLException {
+    public static DbIterator get_iterator(PlainSelect body) throws SQLException {
         Table t;
-        DB_Iterator op;
+        DbIterator op;
         boolean allCol;
         int i;
         i = 0;
@@ -106,7 +106,7 @@ public class SQLSelect {
             rename_table(t);
             allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
             String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
-            DB_Iterator readOp = new Scan_Iterator(new File(tableFile), t);
+            DbIterator readOp = new ScanIterator(new File(tableFile), t);
             op = Execute.select_tree(readOp,
                     body.getWhere(), join_function, body.getSelectItems(), t,
                     allCol, joins
@@ -135,7 +135,7 @@ public class SQLSelect {
 
     public void getResult() throws SQLException {
         SelectBody body = sql.getSelectBody();
-        DB_Iterator current = null;
+        DbIterator current = null;
         if (body instanceof PlainSelect) {
             current = get_iterator((PlainSelect) body);
         } else if (body instanceof Union) {

@@ -9,21 +9,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class Cross_Product_Iterator implements DB_Iterator {
+public class CrossProductIterator implements DbIterator {
 
-    DB_Iterator leftIterator, rightIterator;
+    DbIterator leftIterator, rightIterator;
     final Table table;
     private final int size;
     private Object[] temp1;
 
-    public Cross_Product_Iterator(DB_Iterator oper, Table righttable,
-                                  Table lefttable) throws SQLException {
+    public CrossProductIterator(DbIterator oper, Table righttable,
+                                Table lefttable) throws SQLException {
 
         leftIterator = oper;
         String dataFileName = righttable.getName() + ".dat";
         dataFileName = GlobalVariables.collection_location.toString() + File.separator + dataFileName.toLowerCase();
         try {
-            rightIterator = new Scan_Iterator(new File(dataFileName), righttable, true);
+            rightIterator = new ScanIterator(new File(dataFileName), righttable, true);
         } catch (NullPointerException e) {
             System.out.println("Null pointer exception in JoinOperator()");
         }
