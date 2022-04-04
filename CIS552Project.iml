@@ -7,8 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jsqlparser-1.0.0" level="project" />
-    <orderEntry type="library" name="commons-csv-1.9.0-sources" level="project" />
+    <orderEntry type="library" name="commons-csv-1.9" level="project" />
     <orderEntry type="library" name="evallib-1.0" level="project" />
+    <orderEntry type="library" name="jsqlparser-1.0.0" level="project" />
   </component>
 </module>

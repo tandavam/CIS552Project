@@ -1,7 +1,7 @@
 package com.dbDesign;
 
-import com.dbDesign.StatmentParser.SQL_Create_Table;
-import com.dbDesign.StatmentParser.SQLSelect;
+import com.dbDesign.StatementParser.SQL_Create_Table;
+import com.dbDesign.StatementParser.SQLSelect;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import net.sf.jsqlparser.statement.delete.Delete;

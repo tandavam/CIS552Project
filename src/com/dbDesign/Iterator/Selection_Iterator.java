@@ -1,7 +1,7 @@
 package com.dbDesign.Iterator;
 
 
-import com.dbDesign.StatmentParser.Evaluator;
+import com.dbDesign.StatementParser.Evaluator;
 import net.sf.jsqlparser.expression.BooleanValue;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;

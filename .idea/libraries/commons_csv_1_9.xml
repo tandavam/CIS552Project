@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="commons-csv-1.9">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Downloads/commons-csv-1.9.0" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/Downloads/commons-csv-1.9.0/apidocs" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$USER_HOME$/Downloads/commons-csv-1.9.0" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Downloads/commons-csv-1.9.0" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/commons-csv-1.9.0" recursive="false" type="SOURCES" />
+  </library>
+</component>

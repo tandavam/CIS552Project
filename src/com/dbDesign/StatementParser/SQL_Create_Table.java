@@ -1,4 +1,4 @@
-package com.dbDesign.StatmentParser;
+package com.dbDesign.StatementParser;
 
 import com.dbDesign.GlobalVariables;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
