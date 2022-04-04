@@ -19,7 +19,7 @@ public class Execute {
 
     public static DB_Iterator select_tree(DB_Iterator op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
-        DB_Iterator oper = op;
+        DB_Iterator operator = op;
         GlobalVariables.column_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
@@ -36,20 +36,20 @@ public class Execute {
         }
         if (joins != null && !joins.isEmpty()) {
             for (Table jointly : joins) {
-                oper = new Cross_Product_Iterator(oper, jointly, table);
-                table = oper.getTable();
+                operator = new Cross_Product_Iterator(operator, jointly, table);
+                table = operator.getTable();
             }
-            table = oper.getTable();
+            table = operator.getTable();
         }
         if (where != null)
-            oper = new Selection_Iterator(oper, where, GlobalVariables.list_tables.get(table.getAlias()));
+            operator = new Selection_Iterator(operator, where, GlobalVariables.list_tables.get(table.getAlias()));
         if (condition != null)
-            oper = new Selection_Iterator(oper, condition, GlobalVariables.list_tables.get(table.getAlias()));
+            operator = new Selection_Iterator(operator, condition, GlobalVariables.list_tables.get(table.getAlias()));
         if (ifagg)
-            oper = new Aggregate_Iterator(oper, aggregator, table);
+            operator = new Aggregate_Iterator(operator, aggregator, table);
         else
-            oper = new Projection_Iterator(oper, list, table, allColumns);
-        return oper;
+            operator = new Projection_Iterator(operator, list, table, allColumns);
+        return operator;
     }
 
 
