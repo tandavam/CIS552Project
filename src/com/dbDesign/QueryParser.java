@@ -1,7 +1,7 @@
 package com.dbDesign;
 
-import com.dbDesign.StatementParser.SQL_Create_Table;
-import com.dbDesign.StatementParser.SQLSelect;
+import com.dbDesign.StatementParser.SqlCreateTable;
+import com.dbDesign.StatementParser.SqlSelect;
 import net.sf.jsqlparser.statement.StatementVisitor;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 import net.sf.jsqlparser.statement.delete.Delete;
@@ -17,7 +17,7 @@ public class QueryParser implements StatementVisitor {
     @Override
     public void visit(Select select) {
         try {
-            new SQLSelect(select).getResult();
+            new SqlSelect(select).getResult();
         } catch (Exception e) {
             System.out.println("SQL syntax error"); //$NON-NLS-1$
             e.printStackTrace();
@@ -58,6 +58,6 @@ public class QueryParser implements StatementVisitor {
 
     @Override
     public void visit(CreateTable createTable) {
-        new SQL_Create_Table( createTable).getResult();
+        new SqlCreateTable( createTable).getResult();
     }
 }
