@@ -45,14 +45,14 @@ public class SqlSelect {
             collection.setAlias(collection.getName());
         }
 
-        if (!GlobalVariables.list_tables.containsKey(collection.getAlias())) {
-            LinkedHashMap<String, Integer> tempSchema = GlobalVariables.list_tables.get(collection.getName());
+        if (!GlobalVariables.show_all_collections.containsKey(collection.getAlias())) {
+            LinkedHashMap<String, Integer> tempSchema = GlobalVariables.show_all_collections.get(collection.getName());
             LinkedHashMap<String, Integer> newSchema = new LinkedHashMap<>();
             for (String key : tempSchema.keySet()) {
                 String[] temp = key.split("\\.");
                 newSchema.put(collection.getAlias() + "." + temp[1], tempSchema.get(key));
             }
-            GlobalVariables.list_tables.put(collection.getAlias(), newSchema);
+            GlobalVariables.show_all_collections.put(collection.getAlias(), newSchema);
         }
     }
 
@@ -119,7 +119,7 @@ public class SqlSelect {
         LinkedHashMap<String, Integer> dbSchema = new LinkedHashMap<>();
         if ((selectItems.get(0) instanceof AllColumns) || (selectItems.get(0) instanceof AllTableColumns)) {
             Table table = (Table) fromItem;
-            dbSchema = (GlobalVariables.list_tables.get(table.getName()));
+            dbSchema = (GlobalVariables.show_all_collections.get(table.getName()));
         } else {
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectExpressionItem abc = (SelectExpressionItem) selectItems.get(i);
@@ -130,7 +130,7 @@ public class SqlSelect {
                 }
             }
         }
-        GlobalVariables.list_tables.put(collection.getAlias(), dbSchema);
+        GlobalVariables.show_all_collections.put(collection.getAlias(), dbSchema);
     }
 
     public void getResult() throws SQLException {

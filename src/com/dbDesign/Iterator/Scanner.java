@@ -53,7 +53,7 @@ public class Scanner implements Db {
                 scan = parser.iterator();
             }
         } catch (IOException e) {
-            System.out.println("error");
+            System.out.println("Scanner Error");
         }
     }
 
@@ -69,7 +69,7 @@ public class Scanner implements Db {
         Object[] tuple;
         ArrayList<String> dataType;
         tuple = new Object[line.size()];
-        dataType = GlobalVariables.schema_store.get(table.getName().toUpperCase());
+        dataType = GlobalVariables.database_schema.get(table.getName().toUpperCase());
 
         while (index < line.size()) {
             if ("CHAR".equals(dataType.get(index).toUpperCase()) || "STRING".equals(dataType.get(index).toUpperCase()) || "VARCHAR".equals(dataType.get(index).toUpperCase())) {

@@ -25,7 +25,7 @@ public class CrossProduct implements Db {
         try {
             rightIterator = new Scanner(new File(dataFileName), right_table, true);
         } catch (NullPointerException e) {
-            System.out.println("Null pointer exception in JoinOperator()");
+            System.out.println("Cross Pointer");
         }
 
 
@@ -36,8 +36,8 @@ public class CrossProduct implements Db {
         this.table = new Table(newTableName, newTableName);
         this.table.setAlias(newTableName);
         dataType = create_new_schema(newSchema, left_table, right_table, dataType);
-        GlobalVariables.list_tables.put(newTableName, newSchema);
-        GlobalVariables.schema_store.put(newTableName, dataType);
+        GlobalVariables.show_all_collections.put(newTableName, newSchema);
+        GlobalVariables.database_schema.put(newTableName, dataType);
         temp1 = leftIterator.next();
         size = newSchema.size();
     }
@@ -50,15 +50,15 @@ public class CrossProduct implements Db {
 
 
     ArrayList<String> create_new_schema(HashMap<String, Integer> newSchema, Table lefttable, Table righttable, ArrayList<String> dataType) {
-        LinkedHashMap<String, Integer> oldschema = GlobalVariables.list_tables.get(lefttable.getAlias());
-        dataType.addAll(GlobalVariables.schema_store.get(lefttable.getName()));
+        LinkedHashMap<String, Integer> oldschema = GlobalVariables.show_all_collections.get(lefttable.getAlias());
+        dataType.addAll(GlobalVariables.database_schema.get(lefttable.getName()));
         int sizes = 0;
         for (String col : oldschema.keySet()) {
             newSchema.put(col, oldschema.get(col) + sizes);
         }
         sizes = newSchema.size();
-        oldschema = GlobalVariables.list_tables.get(righttable.getAlias());
-        dataType.addAll(GlobalVariables.schema_store.get(righttable.getName()));
+        oldschema = GlobalVariables.show_all_collections.get(righttable.getAlias());
+        dataType.addAll(GlobalVariables.database_schema.get(righttable.getName()));
         for (String col : oldschema.keySet()) {
             newSchema.put(col, oldschema.get(col) + sizes);
         }

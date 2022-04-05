@@ -20,7 +20,7 @@ public class Execute {
     public static Db select_tree(Db op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
         Db operator = op;
-        GlobalVariables.column_used = new ArrayList<String>();
+        GlobalVariables.attribute_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
             for (Iterator<SelectItem> iterator = list.iterator(); iterator.hasNext(); ) {
@@ -42,9 +42,9 @@ public class Execute {
             table = operator.getTable();
         }
         if (where != null)
-            operator = new Selection(operator, where, GlobalVariables.list_tables.get(table.getAlias()));
+            operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
         if (condition != null)
-            operator = new Selection(operator, condition, GlobalVariables.list_tables.get(table.getAlias()));
+            operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));
         else
             operator = new Projection(operator, list, table, allColumns);
         return operator;

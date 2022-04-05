@@ -29,7 +29,7 @@ public class Projection implements Db {
         this.row = new Object[p.size()];
         this.to_keep = (ArrayList<SelectItem>) p;
         this.table = table;
-        this.schema = GlobalVariables.list_tables.get(table.getAlias());
+        this.schema = GlobalVariables.show_all_collections.get(table.getAlias());
         this.allColumns = allColumns;
     }
 
@@ -54,7 +54,7 @@ public class Projection implements Db {
             if (f instanceof AllTableColumns) {
                 AllTableColumns a = (AllTableColumns) f;
                 Table tab = a.getTable();
-                for (Iterator<String> iterator = GlobalVariables.list_tables.get(tab.getName()).keySet().iterator(); iterator.hasNext(); ) {
+                for (Iterator<String> iterator = GlobalVariables.show_all_collections.get(tab.getName()).keySet().iterator(); iterator.hasNext(); ) {
                     String j;
                     j = iterator.next();
                     SelectExpressionItem expItem;
@@ -81,7 +81,7 @@ public class Projection implements Db {
                     row[index] = eval.eval(x);
                 } else row[index] = eval.eval(e.getExpression());
             } catch (SQLException e1) {
-                System.out.println("error in Project Iterator");
+                System.out.println("Projection Iterator");
             }
             index++;
         }

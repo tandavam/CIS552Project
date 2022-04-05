@@ -20,7 +20,7 @@ public class SqlCreateTable {
         String collection_name = sql.getTable().getName();
         LinkedHashMap<String, Integer> fields = new LinkedHashMap<>();
         ArrayList<String> data_types = new ArrayList<>();
-        if (!GlobalVariables.list_tables.containsKey(collection_name)) {
+        if (!GlobalVariables.show_all_collections.containsKey(collection_name)) {
             List<ColumnDefinition> lists = sql.getColumnDefinitions();
             int i = 0;
             for (ColumnDefinition list : lists) {
@@ -28,8 +28,8 @@ public class SqlCreateTable {
                 data_types.add(list.getColDataType().toString());
                 i++;
             }
-            GlobalVariables.list_tables.put(collection_name, fields);
-            GlobalVariables.schema_store.put(collection_name, data_types);
+            GlobalVariables.show_all_collections.put(collection_name, fields);
+            GlobalVariables.database_schema.put(collection_name, data_types);
         }
 
     }
