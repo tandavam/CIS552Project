@@ -17,9 +17,9 @@ import java.util.List;
 public class Execute {
 
 
-    public static DbIterator select_tree(DbIterator op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
+    public static Db select_tree(Db op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
-        DbIterator operator = op;
+        Db operator = op;
         GlobalVariables.column_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
@@ -36,24 +36,22 @@ public class Execute {
         }
         if (joins != null && !joins.isEmpty()) {
             for (Table jointly : joins) {
-                operator = new CrossProductIterator(operator, jointly, table);
+                operator = new CrossProduct(table, jointly, operator);
                 table = operator.getTable();
             }
             table = operator.getTable();
         }
         if (where != null)
-            operator = new SelectionIterator(operator, where, GlobalVariables.list_tables.get(table.getAlias()));
+            operator = new Selection(operator, where, GlobalVariables.list_tables.get(table.getAlias()));
         if (condition != null)
-            operator = new SelectionIterator(operator, condition, GlobalVariables.list_tables.get(table.getAlias()));
-        if (ifagg)
-            operator = new AggregateIterator(operator, aggregator, table);
+            operator = new Selection(operator, condition, GlobalVariables.list_tables.get(table.getAlias()));
         else
-            operator = new ProjectionIterator(operator, list, table, allColumns);
+            operator = new Projection(operator, list, table, allColumns);
         return operator;
     }
 
 
-    public static void print(DbIterator input) throws SQLException {
+    public static void print(Db input) throws SQLException {
         Object[] row = input.next();
         if (row != null) {
             do {
@@ -76,9 +74,9 @@ public class Execute {
         }
     }
 
-    public static DbIterator union_tree(DbIterator current, DbIterator operator) {
-        DbIterator output = new UnionIterator(current, operator);
-        output = new DistinctIterator(output);
+    public static Db union_tree(Db current, Db operator) {
+        Db output = new Union(current, operator);
+        output = new Distinct(output);
         return output;
     }
 }

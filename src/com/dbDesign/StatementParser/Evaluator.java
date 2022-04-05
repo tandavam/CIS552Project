@@ -24,20 +24,20 @@ public class Evaluator extends Eval {
     }
 
     public PrimitiveValue eval(Column parent_column) {
-        String table;
-        int id = 0;
-        if ((parent_column.getTable() != null) && (parent_column.getTable().getName() != null)) {
-            table = parent_column.getTable().getName();
-            if (!schema.containsKey(table + "." + parent_column.getColumnName()))
-                id = changeAttribute(id, parent_column.getTable() + "." + parent_column.getColumnName());
-            else id = schema.get(table + "." + parent_column.getColumnName());
+        String collection;
+        int index = 0;
+        if ((parent_column.getTable().getName() != null) && (parent_column.getTable() != null)) {
+            collection = parent_column.getTable().getName();
+            if (!schema.containsKey(collection + "." + parent_column.getColumnName()))
+                index = changeAttribute(index, parent_column.getTable() + "." + parent_column.getColumnName());
+            else index = schema.get(collection + "." + parent_column.getColumnName());
         } else if (!GlobalVariables.rename.containsKey(parent_column.getColumnName()))
-            id = changeAttribute(id, parent_column.getColumnName());
-        else if (schema.containsKey(parent_column.getColumnName())) id = schema.get(parent_column.getColumnName());
+            index = changeAttribute(index, parent_column.getColumnName());
+        else if (schema.containsKey(parent_column.getColumnName())) index = schema.get(parent_column.getColumnName());
         else if (schema.containsKey(GlobalVariables.rename.get(parent_column.getColumnName()).toString()))
-            id = schema.get(GlobalVariables.rename.get(parent_column.getColumnName()).toString());
-        else id = changeAttribute(id, parent_column.getColumnName());
-        return (PrimitiveValue) tuple[id];
+            index = schema.get(GlobalVariables.rename.get(parent_column.getColumnName()).toString());
+        else index = changeAttribute(index, parent_column.getColumnName());
+        return (PrimitiveValue) tuple[index];
     }
 
     public int changeAttribute(int id, String column_name) {
