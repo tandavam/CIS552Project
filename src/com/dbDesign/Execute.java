@@ -17,9 +17,9 @@ import java.util.List;
 public class Execute {
 
 
-    public static Db select_tree(Db op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
+    public static cross_product_interface select_tree(cross_product_interface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
-        Db operator = op;
+        cross_product_interface operator = op;
         GlobalVariables.attribute_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
@@ -51,7 +51,7 @@ public class Execute {
     }
 
 
-    public static void print(Db input) throws SQLException {
+    public static void print(cross_product_interface input) throws SQLException {
         Object[] row = input.next();
         if (row != null) {
             do {
@@ -74,8 +74,8 @@ public class Execute {
         }
     }
 
-    public static Db union_tree(Db current, Db operator) {
-        Db output = new Union(current, operator);
+    public static cross_product_interface union_tree(cross_product_interface current, cross_product_interface operator) {
+        cross_product_interface output = new Union(current, operator);
         output = new Distinct(output);
         return output;
     }

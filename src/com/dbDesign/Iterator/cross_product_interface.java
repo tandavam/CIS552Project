@@ -5,7 +5,7 @@ import net.sf.jsqlparser.schema.Table;
 import java.sql.SQLException;
 
 
-public interface Db {
+public interface cross_product_interface {
 
     void reset();
 

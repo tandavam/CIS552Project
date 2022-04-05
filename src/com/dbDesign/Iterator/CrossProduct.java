@@ -9,88 +9,88 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class CrossProduct implements Db {
+public class CrossProduct implements cross_product_interface {
 
-    Db leftIterator, rightIterator;
+    cross_product_interface source, destination;
     final Table table;
     private final int size;
-    private Object[] temp1;
+    private Object[] next;
 
-    public CrossProduct(Table left_table, Table right_table, Db oper
+    public CrossProduct(Table left_table, Table right_table, cross_product_interface operator
                                 ) throws SQLException {
 
-        leftIterator = oper;
-        String dataFileName = right_table.getName() + ".dat";
-        dataFileName = GlobalVariables.collection_location.toString() + File.separator + dataFileName.toLowerCase();
+        source = operator;
+        String file = right_table.getName() + ".dat";
+        file = GlobalVariables.collection_location.toString() + File.separator + file.toLowerCase();
         try {
-            rightIterator = new Scanner(new File(dataFileName), right_table, true);
+            destination = new Scanner(new File(file), right_table, true);
         } catch (NullPointerException e) {
             System.out.println("Cross Pointer");
         }
 
 
-        LinkedHashMap<String, Integer> newSchema = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> new_schema = new LinkedHashMap<>();
 
-        ArrayList<String> dataType = new ArrayList<>();
-        String newTableName = left_table.getAlias() + "," + right_table.getAlias();
-        this.table = new Table(newTableName, newTableName);
-        this.table.setAlias(newTableName);
-        dataType = create_new_schema(newSchema, left_table, right_table, dataType);
-        GlobalVariables.show_all_collections.put(newTableName, newSchema);
-        GlobalVariables.database_schema.put(newTableName, dataType);
-        temp1 = leftIterator.next();
-        size = newSchema.size();
+        ArrayList<String> data_type = new ArrayList<>();
+        String destination_table = left_table.getAlias() + "," + right_table.getAlias();
+        this.table = new Table(destination_table);
+        this.table.setAlias(destination_table);
+        data_type = create_new_schema(new_schema, left_table, right_table, data_type);
+        GlobalVariables.show_all_collections.put(destination_table, new_schema);
+        GlobalVariables.database_schema.put(destination_table, data_type);
+        next = source.next();
+        size = new_schema.size();
     }
 
     @Override
     public void reset() {
-        leftIterator.reset();
-        rightIterator.reset();
+        source.reset();
+        destination.reset();
     }
 
 
-    ArrayList<String> create_new_schema(HashMap<String, Integer> newSchema, Table lefttable, Table righttable, ArrayList<String> dataType) {
-        LinkedHashMap<String, Integer> oldschema = GlobalVariables.show_all_collections.get(lefttable.getAlias());
-        dataType.addAll(GlobalVariables.database_schema.get(lefttable.getName()));
+    ArrayList<String> create_new_schema(HashMap<String, Integer> new_schema, Table left_collection, Table right_collection, ArrayList<String> data_type) {
+        LinkedHashMap<String, Integer> old_schema = GlobalVariables.show_all_collections.get(left_collection.getAlias());
+        data_type.addAll(GlobalVariables.database_schema.get(left_collection.getName()));
         int sizes = 0;
-        for (String col : oldschema.keySet()) {
-            newSchema.put(col, oldschema.get(col) + sizes);
+        for (String s : old_schema.keySet()) {
+            new_schema.put(s, old_schema.get(s) + sizes);
         }
-        sizes = newSchema.size();
-        oldschema = GlobalVariables.show_all_collections.get(righttable.getAlias());
-        dataType.addAll(GlobalVariables.database_schema.get(righttable.getName()));
-        for (String col : oldschema.keySet()) {
-            newSchema.put(col, oldschema.get(col) + sizes);
+        sizes = new_schema.size();
+        old_schema = GlobalVariables.show_all_collections.get(right_collection.getAlias());
+        data_type.addAll(GlobalVariables.database_schema.get(right_collection.getName()));
+        for (String col : old_schema.keySet()) {
+            new_schema.put(col, old_schema.get(col) + sizes);
         }
-        return dataType;
+        return data_type;
     }
 
     @Override
     public Object[] next() throws SQLException {
-        Object[] temp2 = rightIterator.next();
-        if (temp2 == null) {
-            temp1 = leftIterator.next();
-            if (temp1 == null)
+        Object[] next = destination.next();
+        if (next == null) {
+            this.next = source.next();
+            if (this.next == null)
                 return null;
-            rightIterator.reset();
-            temp2 = rightIterator.next();
+            destination.reset();
+            next = destination.next();
         }
-        return create_tuple(temp1, temp2);
+        return create_tuple(this.next, next);
     }
 
 
     public Object[] create_tuple(Object[] left, Object[] right) {
-        Object[] new_row = new Object[size];
+        Object[] new_collection = new Object[size];
         int index = 0;
         for (Object o : left) {
-            new_row[index] = o;
+            new_collection[index] = o;
             index++;
         }
         for (Object o : right) {
-            new_row[index] = o;
+            new_collection[index] = o;
             index++;
         }
-        return new_row;
+        return new_collection;
     }
 
     @Override

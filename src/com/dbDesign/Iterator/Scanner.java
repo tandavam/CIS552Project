@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Scanner implements Db {
+public class Scanner implements cross_product_interface {
     final Table table;
     private final boolean full;
     File file;

@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class Distinct implements Db {
+public class Distinct implements cross_product_interface {
 
-    private final Db DB_Iterator;
+    private final cross_product_interface DB_Iterator;
     private final HashSet<List<Object>> buffer = new HashSet<>();
 
-    public Distinct(Db DB_Iterator) {
+    public Distinct(cross_product_interface DB_Iterator) {
         this.DB_Iterator = DB_Iterator;
     }
 

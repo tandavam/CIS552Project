@@ -11,11 +11,11 @@ import java.util.Iterator;
 
 public class Evaluator extends Eval {
 
-    private final HashMap<String, Integer> schema;
+    private final HashMap<String, Integer> collection_schema;
     private Object[] tuple;
 
     public Evaluator(HashMap<String, Integer> collection_name, Object[] tuple) {
-        this.schema = collection_name;
+        this.collection_schema = collection_name;
         this.tuple = tuple;
     }
 
@@ -28,24 +28,24 @@ public class Evaluator extends Eval {
         int index = 0;
         if ((parent_column.getTable().getName() != null) && (parent_column.getTable() != null)) {
             collection = parent_column.getTable().getName();
-            if (!schema.containsKey(collection + "." + parent_column.getColumnName()))
+            if (!collection_schema.containsKey(collection + "." + parent_column.getColumnName()))
                 index = changeAttribute(index, parent_column.getTable() + "." + parent_column.getColumnName());
-            else index = schema.get(collection + "." + parent_column.getColumnName());
+            else index = collection_schema.get(collection + "." + parent_column.getColumnName());
         } else if (!GlobalVariables.rename.containsKey(parent_column.getColumnName()))
             index = changeAttribute(index, parent_column.getColumnName());
-        else if (schema.containsKey(parent_column.getColumnName())) index = schema.get(parent_column.getColumnName());
-        else if (schema.containsKey(GlobalVariables.rename.get(parent_column.getColumnName()).toString()))
-            index = schema.get(GlobalVariables.rename.get(parent_column.getColumnName()).toString());
+        else if (collection_schema.containsKey(parent_column.getColumnName())) index = collection_schema.get(parent_column.getColumnName());
+        else if (collection_schema.containsKey(GlobalVariables.rename.get(parent_column.getColumnName()).toString()))
+            index = collection_schema.get(GlobalVariables.rename.get(parent_column.getColumnName()).toString());
         else index = changeAttribute(index, parent_column.getColumnName());
         return (PrimitiveValue) tuple[index];
     }
 
-    public int changeAttribute(int id, String column_name) {
-        for (Iterator<String> iterator = schema.keySet().iterator(); iterator.hasNext(); ) {
+    public int changeAttribute(int index, String column_name) {
+        for (Iterator<String> iterator = collection_schema.keySet().iterator(); iterator.hasNext(); ) {
             String column = iterator.next();
             String x = column.substring(column.indexOf(".") + 1);
-            if (x.equals(column_name)) id = schema.get(column);
+            if (x.equals(column_name)) index = collection_schema.get(column);
         }
-        return id;
+        return index;
     }
 }

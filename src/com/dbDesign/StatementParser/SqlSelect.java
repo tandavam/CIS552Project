@@ -3,7 +3,7 @@ package com.dbDesign.StatementParser;
 
 import com.dbDesign.GlobalVariables;
 import com.dbDesign.Execute;
-import com.dbDesign.Iterator.Db;
+import com.dbDesign.Iterator.cross_product_interface;
 import com.dbDesign.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
@@ -56,9 +56,9 @@ public class SqlSelect {
         }
     }
 
-    public static Db get_iterator(PlainSelect body) throws SQLException {
+    public static cross_product_interface get_iterator(PlainSelect body) throws SQLException {
         Table t;
-        Db op;
+        cross_product_interface op;
         boolean allCol;
         int i;
         i = 0;
@@ -106,7 +106,7 @@ public class SqlSelect {
             rename_table(t);
             allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
             String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
-            Db readOp = new Scanner(new File(tableFile), t);
+            cross_product_interface readOp = new Scanner(new File(tableFile), t);
             op = Execute.select_tree(readOp,
                     body.getWhere(), join_function, body.getSelectItems(), t,
                     allCol, joins
@@ -135,7 +135,7 @@ public class SqlSelect {
 
     public void getResult() throws SQLException {
         SelectBody body = sql.getSelectBody();
-        Db current = null;
+        cross_product_interface current = null;
         if (body instanceof PlainSelect) {
             current = get_iterator((PlainSelect) body);
         } else if (body instanceof Union) {

@@ -1,7 +1,5 @@
 package com.dbDesign;
-
 import net.sf.jsqlparser.expression.Expression;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +11,5 @@ public class GlobalVariables {
     public static HashMap<String, Expression> rename = new HashMap<>();
     public static ArrayList<String> attribute_used = new ArrayList<>();
     public static final HashMap<String, LinkedHashMap<String, Integer>> show_all_collections = new HashMap<>();
-
 
 }

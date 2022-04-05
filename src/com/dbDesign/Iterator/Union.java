@@ -4,13 +4,13 @@ import net.sf.jsqlparser.schema.Table;
 
 import java.sql.SQLException;
 
-public class Union implements Db {
-    final Db left;
-    final Db right;
+public class Union implements cross_product_interface {
+    final cross_product_interface left;
+    final cross_product_interface right;
     boolean is_left_navigated = false;
     Object[] lout;
 
-    public Union(Db left_node, Db right_node) {
+    public Union(cross_product_interface left_node, cross_product_interface right_node) {
         this.left = left_node;
         this.right = right_node;
     }

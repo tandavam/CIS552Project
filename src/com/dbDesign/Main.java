@@ -25,15 +25,12 @@ public class Main {
                     parse_query_string(list_of_queries[query]);
                 }
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
-
     private static void parse_query_string(String list_of_queries) throws ParseException {
         Reader input = new StringReader(list_of_queries);
         CCJSqlParser parser = new CCJSqlParser(input);

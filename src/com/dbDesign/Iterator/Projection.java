@@ -14,16 +14,16 @@ import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
-public class Projection implements Db {
+public class Projection implements cross_product_interface {
 
-    final Db op;
+    final cross_product_interface op;
     final Table table;
     ArrayList<SelectItem> to_keep;
     final HashMap<String, Integer> schema;
     final boolean allColumns;
     Object[] row;
 
-    public Projection(Db op, List<SelectItem> p, Table table, boolean allColumns) {
+    public Projection(cross_product_interface op, List<SelectItem> p, Table table, boolean allColumns) {
 
         this.op = op;
         this.row = new Object[p.size()];

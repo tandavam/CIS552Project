@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 
-public class Selection implements Db {
+public class Selection implements cross_product_interface {
 
-    final Db op;
+    final cross_product_interface op;
     final HashMap<String, Integer> schema;
     final Expression condition;
 
-    public Selection(Db input, Expression condition, HashMap<String, Integer> schema) {
+    public Selection(cross_product_interface input, Expression condition, HashMap<String, Integer> schema) {
 
         this.op = input;
         this.schema = schema;
