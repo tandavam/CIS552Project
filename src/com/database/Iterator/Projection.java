@@ -1,12 +1,12 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import com.dbDesign.GlobalVariables;
-import com.dbDesign.StatementParser.Evaluator;
+import com.database.GlobalVariables;
+import com.database.StatementParser.Evaluator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.schema.Column;
@@ -14,16 +14,16 @@ import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
-public class Projection implements cross_product_interface {
+public class Projection implements CrossProductInterface {
 
-    final cross_product_interface op;
+    final CrossProductInterface op;
     final Table table;
     ArrayList<SelectItem> to_keep;
     final HashMap<String, Integer> schema;
     final boolean allColumns;
     Object[] row;
 
-    public Projection(cross_product_interface op, List<SelectItem> p, Table table, boolean allColumns) {
+    public Projection(CrossProductInterface op, List<SelectItem> p, Table table, boolean allColumns) {
 
         this.op = op;
         this.row = new Object[p.size()];

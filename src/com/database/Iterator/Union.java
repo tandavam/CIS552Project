@@ -1,16 +1,16 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
 import net.sf.jsqlparser.schema.Table;
 
 import java.sql.SQLException;
 
-public class Union implements cross_product_interface {
-    final cross_product_interface left;
-    final cross_product_interface right;
+public class Union implements CrossProductInterface {
+    final CrossProductInterface left;
+    final CrossProductInterface right;
     boolean is_left_navigated = false;
     Object[] lout;
 
-    public Union(cross_product_interface left_node, cross_product_interface right_node) {
+    public Union(CrossProductInterface left_node, CrossProductInterface right_node) {
         this.left = left_node;
         this.right = right_node;
     }

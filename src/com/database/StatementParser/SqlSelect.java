@@ -1,10 +1,10 @@
-package com.dbDesign.StatementParser;
+package com.database.StatementParser;
 
 
-import com.dbDesign.GlobalVariables;
-import com.dbDesign.Execute;
-import com.dbDesign.Iterator.cross_product_interface;
-import com.dbDesign.Iterator.Scanner;
+import com.database.GlobalVariables;
+import com.database.Execute;
+import com.database.Iterator.CrossProductInterface;
+import com.database.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.*;
@@ -56,12 +56,11 @@ public class SqlSelect {
         }
     }
 
-    public static cross_product_interface get_iterator(PlainSelect body) throws SQLException {
+    public static CrossProductInterface get_iterator(PlainSelect body) throws SQLException {
         Table t;
-        cross_product_interface op;
+        CrossProductInterface op;
         boolean allCol;
-        int i;
-        i = 0;
+        int i = 0;
         ArrayList<Table> joins = new ArrayList<>();
         ArrayList<String> list_of_collections = new ArrayList<>();
         list_of_collections.add(((Table) body.getFromItem()).getName());
@@ -106,7 +105,7 @@ public class SqlSelect {
             rename_table(t);
             allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
             String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
-            cross_product_interface readOp = new Scanner(new File(tableFile), t);
+            CrossProductInterface readOp = new Scanner(new File(tableFile), t);
             op = Execute.select_tree(readOp,
                     body.getWhere(), join_function, body.getSelectItems(), t,
                     allCol, joins
@@ -133,9 +132,9 @@ public class SqlSelect {
         GlobalVariables.show_all_collections.put(collection.getAlias(), dbSchema);
     }
 
-    public void getResult() throws SQLException {
+    public void get_result() throws SQLException {
         SelectBody body = sql.getSelectBody();
-        cross_product_interface current = null;
+        CrossProductInterface current = null;
         if (body instanceof PlainSelect) {
             current = get_iterator((PlainSelect) body);
         } else if (body instanceof Union) {

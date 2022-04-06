@@ -1,6 +1,6 @@
-package com.dbDesign;
+package com.database;
 
-import com.dbDesign.Iterator.*;
+import com.database.Iterator.*;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Function;
 import net.sf.jsqlparser.expression.StringValue;
@@ -17,9 +17,9 @@ import java.util.List;
 public class Execute {
 
 
-    public static cross_product_interface select_tree(cross_product_interface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
+    public static CrossProductInterface select_tree(CrossProductInterface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
-        cross_product_interface operator = op;
+        CrossProductInterface operator = op;
         GlobalVariables.attribute_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
@@ -51,7 +51,7 @@ public class Execute {
     }
 
 
-    public static void print(cross_product_interface input) throws SQLException {
+    public static void print(CrossProductInterface input) throws SQLException {
         Object[] row = input.next();
         if (row != null) {
             do {
@@ -74,8 +74,8 @@ public class Execute {
         }
     }
 
-    public static cross_product_interface union_tree(cross_product_interface current, cross_product_interface operator) {
-        cross_product_interface output = new Union(current, operator);
+    public static CrossProductInterface union_tree(CrossProductInterface current, CrossProductInterface operator) {
+        CrossProductInterface output = new Union(current, operator);
         output = new Distinct(output);
         return output;
     }

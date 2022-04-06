@@ -1,11 +1,11 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
 import net.sf.jsqlparser.schema.Table;
 
 import java.sql.SQLException;
 
 
-public interface cross_product_interface {
+public interface CrossProductInterface {
 
     void reset();
 

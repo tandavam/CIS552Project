@@ -1,4 +1,4 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
 import net.sf.jsqlparser.schema.Table;
 
@@ -7,12 +7,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class Distinct implements cross_product_interface {
+public class Distinct implements CrossProductInterface {
 
-    private final cross_product_interface DB_Iterator;
+    private final CrossProductInterface DB_Iterator;
     private final HashSet<List<Object>> buffer = new HashSet<>();
 
-    public Distinct(cross_product_interface DB_Iterator) {
+    public Distinct(CrossProductInterface DB_Iterator) {
         this.DB_Iterator = DB_Iterator;
     }
 

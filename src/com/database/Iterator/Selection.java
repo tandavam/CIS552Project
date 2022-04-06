@@ -1,7 +1,7 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
 
-import com.dbDesign.StatementParser.Evaluator;
+import com.database.StatementParser.Evaluator;
 import net.sf.jsqlparser.expression.BooleanValue;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 
-public class Selection implements cross_product_interface {
+public class Selection implements CrossProductInterface {
 
-    final cross_product_interface op;
+    final CrossProductInterface op;
     final HashMap<String, Integer> schema;
     final Expression condition;
 
-    public Selection(cross_product_interface input, Expression condition, HashMap<String, Integer> schema) {
+    public Selection(CrossProductInterface input, Expression condition, HashMap<String, Integer> schema) {
 
         this.op = input;
         this.schema = schema;

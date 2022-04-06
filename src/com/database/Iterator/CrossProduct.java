@@ -1,6 +1,6 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
-import com.dbDesign.GlobalVariables;
+import com.database.GlobalVariables;
 import net.sf.jsqlparser.schema.Table;
 
 import java.io.File;
@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class CrossProduct implements cross_product_interface {
+public class CrossProduct implements CrossProductInterface {
 
-    cross_product_interface source, destination;
+    CrossProductInterface source, destination;
     final Table table;
     private final int size;
     private Object[] next;
 
-    public CrossProduct(Table left_table, Table right_table, cross_product_interface operator
+    public CrossProduct(Table left_table, Table right_table, CrossProductInterface operator
                                 ) throws SQLException {
 
         source = operator;

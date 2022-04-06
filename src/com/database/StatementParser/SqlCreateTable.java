@@ -1,6 +1,6 @@
-package com.dbDesign.StatementParser;
+package com.database.StatementParser;
 
-import com.dbDesign.GlobalVariables;
+import com.database.GlobalVariables;
 import net.sf.jsqlparser.statement.create.table.ColumnDefinition;
 import net.sf.jsqlparser.statement.create.table.CreateTable;
 
@@ -12,11 +12,11 @@ import java.util.List;
 public class SqlCreateTable {
     private final CreateTable sql;
 
-    public SqlCreateTable(CreateTable stmt) {
-        this.sql = stmt;
+    public SqlCreateTable(CreateTable query) {
+        this.sql = query;
     }
 
-    public void getResult() {
+    public void get_result() {
         String collection_name = sql.getTable().getName();
         LinkedHashMap<String, Integer> fields = new LinkedHashMap<>();
         ArrayList<String> data_types = new ArrayList<>();

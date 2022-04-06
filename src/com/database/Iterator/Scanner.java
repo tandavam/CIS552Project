@@ -1,6 +1,6 @@
-package com.dbDesign.Iterator;
+package com.database.Iterator;
 
-import com.dbDesign.GlobalVariables;
+import com.database.GlobalVariables;
 import net.sf.jsqlparser.expression.DateValue;
 import net.sf.jsqlparser.expression.DoubleValue;
 import net.sf.jsqlparser.expression.LongValue;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class Scanner implements cross_product_interface {
+public class Scanner implements CrossProductInterface {
     final Table table;
     private final boolean full;
     File file;

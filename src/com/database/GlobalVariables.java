@@ -1,4 +1,4 @@
-package com.dbDesign;
+package com.database;
 import net.sf.jsqlparser.expression.Expression;
 import java.io.File;
 import java.util.ArrayList;
