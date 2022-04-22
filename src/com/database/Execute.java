@@ -60,14 +60,12 @@ public class Execute {
                 while (i < row.length - 1) {
                     if (row[i] instanceof StringValue) {
                         System.out.print(((StringValue) row[i]).getNotExcapedValue() + "|");
-//                        System.out.println("%%%%%%%%%");
                     } else
                         System.out.print(row[i] + "|");
                     i++;
                 }
                 if (row[i] instanceof StringValue) {
                     System.out.print(((StringValue) row[i]).getNotExcapedValue());
-
                 } else
                     System.out.print(row[i]);
                 System.out.println();
@@ -78,7 +76,7 @@ public class Execute {
 
     public static CrossProductInterface union_tree(CrossProductInterface current, CrossProductInterface operator) {
         CrossProductInterface output = new Union(current, operator);
-        output = new Distinct(output);
+//        output = new Distinct(output);
         return output;
     }
 }
