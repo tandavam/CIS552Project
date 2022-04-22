@@ -30,6 +30,10 @@ public class Main {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
     }
     private static void parse_query_string(String list_of_queries) throws ParseException {
         Reader input = new StringReader(list_of_queries);
