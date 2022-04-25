@@ -76,7 +76,7 @@ public class Execute {
 
     public static CrossProductInterface union_tree(CrossProductInterface current, CrossProductInterface operator) {
         CrossProductInterface output = new Union(current, operator);
-//        output = new Distinct(output);
+        output = new Distinct(output);
         return output;
     }
 }
