@@ -8,6 +8,7 @@ import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.AllTableColumns;
 import net.sf.jsqlparser.statement.select.SelectExpressionItem;
 import net.sf.jsqlparser.statement.select.SelectItem;
+//import net.sf.jsqlparser.statement.select.Union;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ import java.util.List;
 public class Execute {
 
 
-    public static CrossProductInterface select_tree(CrossProductInterface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
+    public static JoinInterface select_tree(JoinInterface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
         boolean ifagg = false;
-        CrossProductInterface operator = op;
+        JoinInterface operator = op;
         GlobalVariables.attribute_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
@@ -36,7 +37,7 @@ public class Execute {
         }
         if (joins != null && !joins.isEmpty()) {
             for (Table jointly : joins) {
-                operator = new CrossProduct(table, jointly, operator);
+                operator = new Join(table, jointly, operator);
                 table = operator.getTable();
             }
             table = operator.getTable();
@@ -51,7 +52,7 @@ public class Execute {
     }
 
 
-    public static void print(CrossProductInterface input) throws SQLException {
+    public static void print(JoinInterface input) throws SQLException {
         Object[] row = input.next();
         if (row != null) {
             do {
@@ -72,11 +73,5 @@ public class Execute {
                 row = input.next();
             } while (row != null);
         }
-    }
-
-    public static CrossProductInterface union_tree(CrossProductInterface current, CrossProductInterface operator) {
-        CrossProductInterface output = new Union(current, operator);
-        output = new Distinct(output);
-        return output;
     }
 }
