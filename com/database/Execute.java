@@ -19,8 +19,9 @@ public class Execute {
 
 
     public static JoinInterface select_tree(JoinInterface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
+        boolean ifagg = false;
         JoinInterface operator = op;
-        GlobalVariables.attribute_used = new ArrayList<>();
+        GlobalVariables.attribute_used = new ArrayList<String>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
             for (Iterator<SelectItem> iterator = list.iterator(); iterator.hasNext(); ) {
@@ -29,6 +30,7 @@ public class Execute {
                     SelectExpressionItem exp_item = (SelectExpressionItem) item;
                     if (exp_item.getExpression() instanceof Function) {
                         aggregator.add((Function) exp_item.getExpression());
+                        ifagg = true;
                     }
                 }
             }
@@ -40,10 +42,10 @@ public class Execute {
             }
             table = operator.getTable();
         }
-        if (condition != null)
-            operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));
         if (where != null)
             operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
+        if (condition != null)
+            operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));
         else
             operator = new Projection(operator, list, table, allColumns);
         return operator;
@@ -72,5 +74,5 @@ public class Execute {
             } while (row != null);
         }
     }
-
+    
 }

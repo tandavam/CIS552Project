@@ -25,7 +25,7 @@ public class Join implements JoinInterface {
         try {
             destination = new Scanner(new File(file), right_table, true);
         } catch (NullPointerException e) {
-            System.out.println("Null Pointer Exception");
+            System.out.println("Cross Pointer");
         }
 
 
