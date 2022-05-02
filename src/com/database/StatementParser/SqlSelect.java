@@ -140,9 +140,9 @@ public class SqlSelect {
         } else if (body instanceof Union) {
             List<PlainSelect> plainSelects = ((Union) body).getPlainSelects();
             current = get_iterator(plainSelects.get(0));
-            for (PlainSelect i : plainSelects.subList(1, plainSelects.size())) {
-                current = Execute.union_tree(current, get_iterator(i));
-            }
+//            for (PlainSelect i : plainSelects.subList(1, plainSelects.size())) {
+//                current = Execute.union_tree(current, get_iterator(i));
+//            }
         }
         Execute.print(current);
     }

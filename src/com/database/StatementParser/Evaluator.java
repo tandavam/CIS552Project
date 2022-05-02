@@ -32,7 +32,7 @@ public class Evaluator extends Eval {
 
     public PrimitiveValue eval(Column parent_column) {
         String collection;
-        int index = 0;
+        int index = -1;
         if ((parent_column.getTable().getName() != null) && (parent_column.getTable() != null)) {
             collection = parent_column.getTable().getName();
             if (!collection_schema.containsKey(collection + "." + parent_column.getColumnName()))

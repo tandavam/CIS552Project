@@ -74,4 +74,10 @@ public class Execute {
             } while (row != null);
         }
     }
+
+    public static JoinInterface union_tree(JoinInterface current, JoinInterface operator) {
+//        JoinInterface output = new Union(current, operator);
+//        output = new Distinct(output);
+        return null;
+    }
 }
