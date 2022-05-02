@@ -19,19 +19,17 @@ public class Execute {
 
 
     public static JoinInterface select_tree(JoinInterface op, Expression where, Expression condition, List<SelectItem> list, Table table, boolean allColumns, ArrayList<Table> joins) throws SQLException {
-        boolean ifagg = false;
         JoinInterface operator = op;
-        GlobalVariables.attribute_used = new ArrayList<String>();
+        GlobalVariables.attribute_used = new ArrayList<>();
         var aggregator = new ArrayList<Function>();
         if (!allColumns) {
             for (Iterator<SelectItem> iterator = list.iterator(); iterator.hasNext(); ) {
                 SelectItem item = iterator.next();
                 if (!(item instanceof AllTableColumns)) {
                     SelectExpressionItem exp_item = (SelectExpressionItem) item;
-                    if (exp_item.getExpression() instanceof Function) {
-                        aggregator.add((Function) exp_item.getExpression());
-                        ifagg = true;
-                    }
+//                    if (exp_item.getExpression() instanceof Function) {
+//                        aggregator.add((Function) exp_item.getExpression());
+//                    }
                 }
             }
         }
@@ -42,10 +40,10 @@ public class Execute {
             }
             table = operator.getTable();
         }
-        if (where != null)
-            operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
         if (condition != null)
             operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));
+        if (where != null)
+            operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
         else
             operator = new Projection(operator, list, table, allColumns);
         return operator;

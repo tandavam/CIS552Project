@@ -31,6 +31,5 @@ public class SqlCreateTable {
             GlobalVariables.show_all_collections.put(collection_name, fields);
             GlobalVariables.database_schema.put(collection_name, data_types);
         }
-
     }
 }

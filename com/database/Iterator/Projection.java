@@ -34,9 +34,8 @@ public class Projection implements JoinInterface {
     }
 
     @Override
-    public void reset() {
-
-
+    public Table getTable() {
+        return table;
     }
 
     @Override
@@ -49,24 +48,7 @@ public class Projection implements JoinInterface {
         if (allColumns) return temp;
         ArrayList<SelectItem> list = new ArrayList<>();
         for (int i = 0, toProjectSize = to_keep.size(); i < toProjectSize; i++) {
-            SelectItem f;
-            f = to_keep.get(i);
-            if (f instanceof AllTableColumns) {
-                AllTableColumns a = (AllTableColumns) f;
-                Table tab = a.getTable();
-                for (Iterator<String> iterator = GlobalVariables.show_all_collections.get(tab.getName()).keySet().iterator(); iterator.hasNext(); ) {
-                    String j;
-                    j = iterator.next();
-                    SelectExpressionItem expItem;
-                    expItem = new SelectExpressionItem();
-                    j = j.substring(j.indexOf(".") + 1);
-                    expItem.setAlias(j);
-                    expItem.setExpression(new Column(tab, j));
-                    list.add(expItem);
-                }
-            } else {
-                list.add(f);
-            }
+            checkIfAttributeExists(list, i);
         }
         to_keep = list;
         row = new Object[to_keep.size()];
@@ -88,10 +70,38 @@ public class Projection implements JoinInterface {
         return row;
     }
 
+    private void checkIfAttributeExists(ArrayList<SelectItem> list, int i) {
+        SelectItem f;
+        f = to_keep.get(i);
+        if (f instanceof AllTableColumns) {
+            checkForAttributes(list, (AllTableColumns) f);
+        } else {
+            list.add(f);
+        }
+    }
+
+    private void checkForAttributes(ArrayList<SelectItem> list, AllTableColumns f) {
+        AllTableColumns a = f;
+        Table tab = a.getTable();
+        for (Iterator<String> iterator = GlobalVariables.show_all_collections.get(tab.getName()).keySet().iterator(); iterator.hasNext(); ) {
+            aliasExpression(list, tab, iterator);
+        }
+    }
+
+    private void aliasExpression(ArrayList<SelectItem> list, Table tab, Iterator<String> iterator) {
+        String j;
+        j = iterator.next();
+        SelectExpressionItem expItem;
+        expItem = new SelectExpressionItem();
+        j = j.substring(j.indexOf(".") + 1);
+        expItem.setAlias(j);
+        expItem.setExpression(new Column(tab, j));
+        list.add(expItem);
+    }
 
     @Override
-    public Table getTable() {
-        return table;
-    }
+    public void reset() {}
+
+
 
 }

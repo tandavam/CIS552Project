@@ -19,10 +19,9 @@ public class QueryParser implements StatementVisitor {
         try {
             new SqlSelect(select).get_result();
         } catch (Exception e) {
-            System.out.println("SQL syntax error"); //$NON-NLS-1$
+            System.out.println("SQL syntax error");
             e.printStackTrace();
         }
-//        System.out.println("==========================");
 
     }
 
