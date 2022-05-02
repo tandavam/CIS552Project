@@ -3,7 +3,7 @@ package com.database.StatementParser;
 
 import com.database.GlobalVariables;
 import com.database.Execute;
-import com.database.Iterator.CrossProductInterface;
+import com.database.Iterator.JoinInterface;
 import com.database.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
@@ -56,9 +56,9 @@ public class SqlSelect {
         }
     }
 
-    public static CrossProductInterface get_iterator(PlainSelect body) throws SQLException {
+    public static JoinInterface get_iterator(PlainSelect body) throws SQLException {
         Table t;
-        CrossProductInterface op;
+        JoinInterface op;
         boolean allCol;
         int i = 0;
         ArrayList<Table> joins = new ArrayList<>();
@@ -105,7 +105,7 @@ public class SqlSelect {
             rename_table(t);
             allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
             String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
-            CrossProductInterface readOp = new Scanner(new File(tableFile), t);
+            JoinInterface readOp = new Scanner(new File(tableFile), t);
             op = Execute.select_tree(readOp,
                     body.getWhere(), join_function, body.getSelectItems(), t,
                     allCol, joins
@@ -134,15 +134,15 @@ public class SqlSelect {
 
     public void get_result() throws SQLException {
         SelectBody body = sql.getSelectBody();
-        CrossProductInterface current = null;
+        JoinInterface current = null;
         if (body instanceof PlainSelect) {
             current = get_iterator((PlainSelect) body);
         } else if (body instanceof Union) {
             List<PlainSelect> plainSelects = ((Union) body).getPlainSelects();
             current = get_iterator(plainSelects.get(0));
-            for (PlainSelect i : plainSelects.subList(1, plainSelects.size())) {
-                current = Execute.union_tree(current, get_iterator(i));
-            }
+//            for (PlainSelect i : plainSelects.subList(1, plainSelects.size())) {
+//                current = Execute.union_tree(current, get_iterator(i));
+//            }
         }
         Execute.print(current);
     }

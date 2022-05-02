@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-public class CrossProduct implements CrossProductInterface {
+public class Join implements JoinInterface {
 
-    CrossProductInterface source, destination;
+    JoinInterface source, destination;
     final Table table;
     private final int size;
     private Object[] next;
 
-    public CrossProduct(Table left_table, Table right_table, CrossProductInterface operator
+    public Join(Table left_table, Table right_table, JoinInterface operator
                                 ) throws SQLException {
 
         source = operator;
