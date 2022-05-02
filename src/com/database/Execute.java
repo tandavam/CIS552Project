@@ -27,9 +27,9 @@ public class Execute {
                 SelectItem item = iterator.next();
                 if (!(item instanceof AllTableColumns)) {
                     SelectExpressionItem exp_item = (SelectExpressionItem) item;
-//                    if (exp_item.getExpression() instanceof Function) {
-//                        aggregator.add((Function) exp_item.getExpression());
-//                    }
+                    if (exp_item.getExpression() instanceof Function) {
+                        aggregator.add((Function) exp_item.getExpression());
+                    }
                 }
             }
         }
