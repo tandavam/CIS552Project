@@ -35,10 +35,13 @@ public class Main {
         }
 
     }
-    private static void parse_query_string(String list_of_queries) throws ParseException {
-        Reader input = new StringReader(list_of_queries);
+    private static void parse_query_string(String queryString) throws ParseException {
+        Reader input = new StringReader(queryString);
+//        System.out.println(input);
         CCJSqlParser parser = new CCJSqlParser(input);
+//        System.out.println(parser);
         Statement statement = parser.Statement();
+//        System.out.println(statement);
         statement.accept(new QueryParser());
     }
 }

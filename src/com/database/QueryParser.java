@@ -22,8 +22,6 @@ public class QueryParser implements StatementVisitor {
             System.out.println("SQL syntax error"); //$NON-NLS-1$
             e.printStackTrace();
         }
-//        System.out.println("==========================");
-
     }
 
     @Override

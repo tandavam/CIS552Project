@@ -36,6 +36,7 @@ public class Selection implements JoinInterface {
         Evaluator evaluator;
         evaluator = new Evaluator(schema, row);
         while (true) {
+//            System.out.println(condition);
             if (row == null) break;
             if (((BooleanValue) evaluator.eval(condition)).getValue()) return row;
             row = op.next();
