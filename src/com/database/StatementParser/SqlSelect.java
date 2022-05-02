@@ -121,11 +121,11 @@ public class SqlSelect {
             dbSchema = (GlobalVariables.show_all_collections.get(table.getName()));
         } else {
             for (int i = 0; i < selectItems.size(); i++) {
-                SelectExpressionItem abc = (SelectExpressionItem) selectItems.get(i);
-                if (abc.getAlias() != null) {
-                    dbSchema.put(abc.getAlias(), i);
+                SelectExpressionItem alias = (SelectExpressionItem) selectItems.get(i);
+                if (alias.getAlias() != null) {
+                    dbSchema.put(alias.getAlias(), i);
                 } else {
-                    dbSchema.put(abc.getExpression().toString(), i);
+                    dbSchema.put(alias.getExpression().toString(), i);
                 }
             }
         }
@@ -138,13 +138,6 @@ public class SqlSelect {
         if (body instanceof PlainSelect) {
             current = get_iterator((PlainSelect) body);
         }
-//        else if (body instanceof Union) {
-//            List<PlainSelect> plainSelects = ((Union) body).getPlainSelects();
-//            current = get_iterator(plainSelects.get(0));
-////            for (PlainSelect i : plainSelects.subList(1, plainSelects.size())) {
-////                current = Execute.union_tree(current, get_iterator(i));
-////            }
-//        }
         Execute.print(current);
     }
 }
