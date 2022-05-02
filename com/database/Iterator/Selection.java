@@ -38,7 +38,11 @@ public class Selection implements JoinInterface {
         while (true) {
 //            System.out.println(condition);
             if (row == null) break;
-            if (((BooleanValue) evaluator.eval(condition)).getValue()) return row;
+            if (((BooleanValue) evaluator.eval(condition)).getValue()) {
+//                System.out.println(row);
+                return row;
+            }
+
             row = op.next();
             evaluator.setTuple(row);
         }

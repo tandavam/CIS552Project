@@ -43,6 +43,7 @@ public class Execute {
             table = operator.getTable();
         }
         if (where != null)
+//            System.out.println(where);
             operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
         if (condition != null)
             operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));
