@@ -6,6 +6,7 @@ import net.sf.jsqlparser.schema.Table;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -75,7 +76,9 @@ public class Join implements JoinInterface {
             destination.reset();
             next = destination.next();
         }
-        return create_tuple(this.next, next);
+        Object[] temp = create_tuple(this.next, next);
+//        System.out.println(Arrays.toString(temp));
+        return temp;
     }
 
 

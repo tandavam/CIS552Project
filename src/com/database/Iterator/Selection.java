@@ -39,17 +39,17 @@ public class Selection implements JoinInterface {
         row = op.next();
         Evaluator evaluator;
         evaluator = new Evaluator(schema, row);
-        System.out.println(Arrays.toString(row));
-        AndExpression abc = (AndExpression) condition;
-        AndExpression abc_ = (AndExpression) abc.getLeftExpression();
+//        System.out.println(Arrays.toString(row));
+//        AndExpression abc = (AndExpression) condition;
+//        AndExpression abc_ = (AndExpression) abc.getLeftExpression();
 
-        System.out.println(((EqualsTo)abc_.getLeftExpression()).getLeftExpression());
-        System.out.println("****");
-        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getRightExpression()).toRawString());
-        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getLeftExpression()).toRawString());
-        System.out.println((((BooleanValue) evaluator.eval(((EqualsTo)abc_.getLeftExpression()))).getValue()));
-        System.out.println("****");
-        System.out.println(schema);
+//        System.out.println(((EqualsTo)abc_.getLeftExpression()).getLeftExpression());
+//        System.out.println("****");
+//        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getRightExpression()).toRawString());
+//        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getLeftExpression()).toRawString());
+//        System.out.println((((BooleanValue) evaluator.eval(((EqualsTo)abc_.getLeftExpression()))).getValue()));
+//        System.out.println("****");
+//        System.out.println(schema);
         while (true) {
 //            System.out.println(this.condition);
             if (row == null) break;
