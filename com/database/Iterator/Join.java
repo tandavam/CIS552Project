@@ -14,7 +14,7 @@ public class Join implements JoinInterface {
 
     JoinInterface source, destination;
     final Table table;
-    private final int size;
+    private int size;
     private Object[] next;
 
     public Join(Table left_table, Table right_table, JoinInterface operator
@@ -33,14 +33,20 @@ public class Join implements JoinInterface {
         LinkedHashMap<String, Integer> new_schema = new LinkedHashMap<>();
 
         ArrayList<String> data_type = new ArrayList<>();
+        table = setup_schema(left_table, right_table, new_schema, data_type);
+    }
+
+    private Table setup_schema(Table left_table, Table right_table, LinkedHashMap<String, Integer> new_schema, ArrayList<String> data_type) throws SQLException {
+        final Table table;
         String destination_table = left_table.getAlias() + "," + right_table.getAlias();
-        this.table = new Table(destination_table);
-        this.table.setAlias(destination_table);
+        table = new Table(destination_table);
+        table.setAlias(destination_table);
         data_type = create_new_schema(new_schema, left_table, right_table, data_type);
         GlobalVariables.show_all_collections.put(destination_table, new_schema);
         GlobalVariables.database_schema.put(destination_table, data_type);
         next = source.next();
         size = new_schema.size();
+        return table;
     }
 
     @Override

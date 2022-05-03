@@ -101,16 +101,24 @@ public class SqlSelect {
             );
         } else {
             SqlSelect.manage_renaming(body);
-            t = (Table) body.getFromItem();
-            rename_table(t);
-            allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
-            String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
-            JoinInterface readOp = new Scanner(new File(tableFile), t);
-            op = Execute.select_tree(readOp,
-                    body.getWhere(), join_function, body.getSelectItems(), t,
-                    allCol, joins
-            );
+            op = execute_tree(body, joins, join_function);
         }
+        return op;
+    }
+
+    private static JoinInterface execute_tree(PlainSelect body, ArrayList<Table> joins, Expression join_function) throws SQLException {
+        JoinInterface op;
+        boolean allCol;
+        Table t;
+        t = (Table) body.getFromItem();
+        rename_table(t);
+        allCol = ((body.getSelectItems().get(0) instanceof AllColumns));
+        String tableFile = GlobalVariables.collection_location.toString() + File.separator + t.getName().toLowerCase() + ".dat";
+        JoinInterface readOp = new Scanner(new File(tableFile), t);
+        op = Execute.select_tree(readOp,
+                body.getWhere(), join_function, body.getSelectItems(), t,
+                allCol, joins
+        );
         return op;
     }
 
