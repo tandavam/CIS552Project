@@ -59,7 +59,6 @@ public class SqlSelect {
     public static JoinInterface get_iterator(PlainSelect body) throws SQLException {
         Table t;
         JoinInterface op;
-        boolean allCol;
         int i = 0;
         ArrayList<Table> joins = new ArrayList<>();
         ArrayList<String> list_of_collections = new ArrayList<>();
@@ -85,13 +84,13 @@ public class SqlSelect {
         if (body.getFromItem() instanceof SubSelect) {
 
             t = new Table();
-            if (body.getFromItem().getAlias() == null) {
-                t.setName("SubQuery");
-                t.setAlias("SubQuery");
-            } else {
-                t.setName(body.getFromItem().getAlias());
-                t.setAlias(body.getFromItem().getAlias());
-            }
+//            if (body.getFromItem().getAlias() == null) {
+//                t.setName("SubQuery");
+//                t.setAlias("SubQuery");
+//            } else {
+//                t.setName(body.getFromItem().getAlias());
+//                t.setAlias(body.getFromItem().getAlias());
+//            }
 
             create_schema(((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getSelectItems(), t, ((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getFromItem());
             op = get_iterator((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody());
@@ -99,7 +98,8 @@ public class SqlSelect {
                     body.getWhere(), join_function, body.getSelectItems(), t,
                     false, joins
             );
-        } else {
+        }
+        else {
             SqlSelect.manage_renaming(body);
             op = execute_tree(body, joins, join_function);
         }

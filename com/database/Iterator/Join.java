@@ -36,19 +36,6 @@ public class Join implements JoinInterface {
         table = setup_schema(left_table, right_table, new_schema, data_type);
     }
 
-    private Table setup_schema(Table left_table, Table right_table, LinkedHashMap<String, Integer> new_schema, ArrayList<String> data_type) throws SQLException {
-        final Table table;
-        String destination_table = left_table.getAlias() + "," + right_table.getAlias();
-        table = new Table(destination_table);
-        table.setAlias(destination_table);
-        data_type = create_new_schema(new_schema, left_table, right_table, data_type);
-        GlobalVariables.show_all_collections.put(destination_table, new_schema);
-        GlobalVariables.database_schema.put(destination_table, data_type);
-        next = source.next();
-        size = new_schema.size();
-        return table;
-    }
-
     @Override
     public void reset() {
         source.reset();
@@ -63,12 +50,7 @@ public class Join implements JoinInterface {
         for (String s : old_schema.keySet()) {
             new_schema.put(s, old_schema.get(s) + sizes);
         }
-        sizes = new_schema.size();
-        old_schema = GlobalVariables.show_all_collections.get(right_collection.getAlias());
-        data_type.addAll(GlobalVariables.database_schema.get(right_collection.getName()));
-        for (String col : old_schema.keySet()) {
-            new_schema.put(col, old_schema.get(col) + sizes);
-        }
+        add_to_schema(new_schema, right_collection, data_type);
         return data_type;
     }
 
@@ -83,10 +65,21 @@ public class Join implements JoinInterface {
             next = destination.next();
         }
         Object[] temp = create_tuple(this.next, next);
-//        System.out.println(Arrays.toString(temp));
         return temp;
     }
 
+    private Table setup_schema(Table left_table, Table right_table, LinkedHashMap<String, Integer> new_schema, ArrayList<String> data_type) throws SQLException {
+        final Table table;
+        String destination_table = left_table.getAlias() + "," + right_table.getAlias();
+        table = new Table(destination_table);
+        table.setAlias(destination_table);
+        data_type = create_new_schema(new_schema, left_table, right_table, data_type);
+        GlobalVariables.show_all_collections.put(destination_table, new_schema);
+        GlobalVariables.database_schema.put(destination_table, data_type);
+        next = source.next();
+        size = new_schema.size();
+        return table;
+    }
 
     public Object[] create_tuple(Object[] left, Object[] right) {
         Object[] new_collection = new Object[size];
@@ -100,6 +93,17 @@ public class Join implements JoinInterface {
             index++;
         }
         return new_collection;
+    }
+
+    private void add_to_schema(HashMap<String, Integer> new_schema, Table right_collection, ArrayList<String> data_type) {
+        LinkedHashMap<String, Integer> old_schema;
+        int sizes;
+        sizes = new_schema.size();
+        old_schema = GlobalVariables.show_all_collections.get(right_collection.getAlias());
+        data_type.addAll(GlobalVariables.database_schema.get(right_collection.getName()));
+        for (String col : old_schema.keySet()) {
+            new_schema.put(col, old_schema.get(col) + sizes);
+        }
     }
 
     @Override

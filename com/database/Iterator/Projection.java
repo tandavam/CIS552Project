@@ -18,19 +18,19 @@ public class Projection implements JoinInterface {
 
     final JoinInterface op;
     final Table table;
-    ArrayList<SelectItem> to_keep;
-    final HashMap<String, Integer> schema;
-    final boolean allColumns;
-    Object[] row;
+    ArrayList<SelectItem> retained_valued;
+    final HashMap<String, Integer> table_schema;
+    final boolean all_attributes;
+    Object[] document;
 
-    public Projection(JoinInterface op, List<SelectItem> p, Table table, boolean allColumns) {
+    public Projection(JoinInterface op, List<SelectItem> p, Table table, boolean all_attributes) {
 
         this.op = op;
-        this.row = new Object[p.size()];
-        this.to_keep = (ArrayList<SelectItem>) p;
+        this.document = new Object[p.size()];
+        this.retained_valued = (ArrayList<SelectItem>) p;
         this.table = table;
-        this.schema = GlobalVariables.show_all_collections.get(table.getAlias());
-        this.allColumns = allColumns;
+        this.table_schema = GlobalVariables.show_all_collections.get(table.getAlias());
+        this.all_attributes = all_attributes;
     }
 
     @Override
@@ -41,38 +41,38 @@ public class Projection implements JoinInterface {
     @Override
     public Object[] next() throws SQLException {
         Object[] temp = op.next();
-        Evaluator eval = new Evaluator(schema, temp);
+        Evaluator eval = new Evaluator(table_schema, temp);
 
         int index = 0;
         if (temp == null) return null;
-        if (allColumns) return temp;
+        if (all_attributes) return temp;
         ArrayList<SelectItem> list = new ArrayList<>();
-        for (int i = 0, toProjectSize = to_keep.size(); i < toProjectSize; i++) {
+        for (int i = 0, toProjectSize = retained_valued.size(); i < toProjectSize; i++) {
             checkIfAttributeExists(list, i);
         }
-        to_keep = list;
-        row = new Object[to_keep.size()];
-        for (int i = 0; i < to_keep.size(); i++) {
-            SelectItem f = to_keep.get(i);
+        retained_valued = list;
+        document = new Object[retained_valued.size()];
+        for (int i = 0; i < retained_valued.size(); i++) {
+            SelectItem f = retained_valued.get(i);
             try {
                 SelectExpressionItem e;
                 e = (SelectExpressionItem) f;
                 if (e.getExpression() instanceof Function) {
                     Expression x;
                     x = new Column(null, e.getExpression().toString());
-                    row[index] = eval.eval(x);
-                } else row[index] = eval.eval(e.getExpression());
+                    document[index] = eval.eval(x);
+                } else document[index] = eval.eval(e.getExpression());
             } catch (SQLException e1) {
                 System.out.println("Projection Iterator");
             }
             index++;
         }
-        return row;
+        return document;
     }
 
     private void checkIfAttributeExists(ArrayList<SelectItem> list, int i) {
         SelectItem f;
-        f = to_keep.get(i);
+        f = retained_valued.get(i);
         if (f instanceof AllTableColumns) {
             checkForAttributes(list, (AllTableColumns) f);
         } else {

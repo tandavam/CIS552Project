@@ -21,23 +21,23 @@ import java.util.List;
 
 public class Scanner implements JoinInterface {
     final Table table;
-    private final boolean full;
+    private final boolean complete;
     File file;
     BufferedReader br = null;
-    Iterator scan = null;
-    private List<CSVRecord> data;
+    Iterator iter = null;
+    private List<CSVRecord> records;
 
     public Scanner(File f, Table table) {
         this.file = f;
         this.table = table;
-        this.full = false;
+        this.complete = false;
         reset();
     }
 
-    public Scanner(File f, Table table, boolean full) {
+    public Scanner(File f, Table table, boolean complete) {
         this.file = f;
         this.table = table;
-        this.full = full;
+        this.complete = complete;
         reset();
     }
 
@@ -46,11 +46,11 @@ public class Scanner implements JoinInterface {
         try {
             br = new BufferedReader(new FileReader(file));
             CSVParser parser = new CSVParser(br, CSVFormat.DEFAULT.withDelimiter('|'));
-            if (full) {
-                if (data == null) data = parser.getRecords();
-                scan = data.iterator();
+            if (complete) {
+                if (records == null) records = parser.getRecords();
+                iter = records.iterator();
             } else {
-                scan = parser.iterator();
+                iter = parser.iterator();
             }
         } catch (IOException e) {
             System.out.println("Scanner Error");
@@ -60,9 +60,9 @@ public class Scanner implements JoinInterface {
     @Override
     public Object[] next() {
         int index = 0;
-        if (!scan.hasNext())
+        if (!iter.hasNext())
             return null;
-        CSVRecord line = (CSVRecord) scan.next();
+        CSVRecord line = (CSVRecord) iter.next();
 
         if (line == null)
             return null;
@@ -72,16 +72,19 @@ public class Scanner implements JoinInterface {
         dataType = GlobalVariables.database_schema.get(table.getName().toUpperCase());
 
         while (index < line.size()) {
-            if ("CHAR".equals(dataType.get(index).toUpperCase()) || "STRING".equals(dataType.get(index).toUpperCase()) || "VARCHAR".equals(dataType.get(index).toUpperCase())) {
+            if ("STRING".equalsIgnoreCase(dataType.get(index)) || "VARCHAR".equalsIgnoreCase(dataType.get(index)) || "CHAR".equalsIgnoreCase(dataType.get(index))) {
                 tuple[index] = new StringValue(line.get(index));
-            } else if ("DECIMAL".equals(dataType.get(index).toUpperCase()) || "DOUBLE".equals(dataType.get(index).toUpperCase())) {
-                tuple[index] = new DoubleValue(line.get(index));
-            } else if ("DATE".equals(dataType.get(index).toUpperCase())) {
+            }
+            else  if ("INT".equalsIgnoreCase(dataType.get(index))) {
+                tuple[index] = new LongValue(line.get(index));
+            }
+            else if ("DATE".equalsIgnoreCase(dataType.get(index))) {
                 tuple[index] = new DateValue(line.get(index));
             }
-              else  if ("INT".equals(dataType.get(index).toUpperCase())) {
-                    tuple[index] = new LongValue(line.get(index));
-            } else {
+            else if ("DECIMAL".equalsIgnoreCase(dataType.get(index)) || "DOUBLE".equalsIgnoreCase(dataType.get(index))) {
+                tuple[index] = new DoubleValue(line.get(index));
+            }
+            else {
                 if (dataType.get(index).contains("CHAR")) {
                     tuple[index] = new StringValue(line.get(index));
                 }
