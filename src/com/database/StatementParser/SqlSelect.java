@@ -114,21 +114,21 @@ public class SqlSelect {
     }
 
     public static void create_schema(List<SelectItem> selectItems, Table collection, FromItem fromItem) {
-        LinkedHashMap<String, Integer> dbSchema = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> schema = new LinkedHashMap<>();
         if ((selectItems.get(0) instanceof AllColumns) || (selectItems.get(0) instanceof AllTableColumns)) {
             Table table = (Table) fromItem;
-            dbSchema = (GlobalVariables.show_all_collections.get(table.getName()));
+            schema = (GlobalVariables.show_all_collections.get(table.getName()));
         } else {
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectExpressionItem alias = (SelectExpressionItem) selectItems.get(i);
                 if (alias.getAlias() != null) {
-                    dbSchema.put(alias.getAlias(), i);
+                    schema.put(alias.getAlias(), i);
                 } else {
-                    dbSchema.put(alias.getExpression().toString(), i);
+                    schema.put(alias.getExpression().toString(), i);
                 }
             }
         }
-        GlobalVariables.show_all_collections.put(collection.getAlias(), dbSchema);
+        GlobalVariables.show_all_collections.put(collection.getAlias(), schema);
     }
 
     public void output() throws SQLException {
