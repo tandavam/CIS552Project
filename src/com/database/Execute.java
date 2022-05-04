@@ -44,6 +44,7 @@ public class Execute {
         }
         if (where != null)
 //            System.out.println(where);
+//            System.out.println(GlobalVariables.show_all_collections);
             operator = new Selection(operator, where, GlobalVariables.show_all_collections.get(table.getAlias()));
         if (condition != null)
             operator = new Selection(operator, condition, GlobalVariables.show_all_collections.get(table.getAlias()));

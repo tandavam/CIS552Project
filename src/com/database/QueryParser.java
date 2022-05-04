@@ -17,7 +17,7 @@ public class QueryParser implements StatementVisitor {
     @Override
     public void visit(Select select) {
         try {
-            new SqlSelect(select).get_result();
+            new SqlSelect(select).output();
         } catch (Exception e) {
             System.out.println("SQL syntax error"); //$NON-NLS-1$
             e.printStackTrace();
@@ -56,6 +56,6 @@ public class QueryParser implements StatementVisitor {
 
     @Override
     public void visit(CreateTable createTable) {
-        new SqlCreateTable( createTable).get_result();
+        new SqlCreateTable( createTable).output();
     }
 }

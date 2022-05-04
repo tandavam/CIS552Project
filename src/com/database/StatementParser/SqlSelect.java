@@ -64,6 +64,7 @@ public class SqlSelect {
         ArrayList<String> list_of_collections = new ArrayList<>();
         list_of_collections.add(((Table) body.getFromItem()).getName());
         Expression join_function = null;
+        t = new Table();
         if (body.getJoins() != null) {
             for (Join join : body.getJoins()) {
                 if (join.getOnExpression() != null) {
@@ -82,16 +83,6 @@ public class SqlSelect {
             }
         }
         if (body.getFromItem() instanceof SubSelect) {
-
-            t = new Table();
-//            if (body.getFromItem().getAlias() == null) {
-//                t.setName("SubQuery");
-//                t.setAlias("SubQuery");
-//            } else {
-//                t.setName(body.getFromItem().getAlias());
-//                t.setAlias(body.getFromItem().getAlias());
-//            }
-
             create_schema(((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getSelectItems(), t, ((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getFromItem());
             op = get_iterator((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody());
             op = Execute.select_tree(op,
@@ -140,7 +131,7 @@ public class SqlSelect {
         GlobalVariables.show_all_collections.put(collection.getAlias(), dbSchema);
     }
 
-    public void get_result() throws SQLException {
+    public void output() throws SQLException {
         SelectBody body = sql.getSelectBody();
         JoinInterface current = null;
         if (body instanceof PlainSelect) {
