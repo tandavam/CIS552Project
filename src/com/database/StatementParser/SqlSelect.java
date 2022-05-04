@@ -1,6 +1,4 @@
 package com.database.StatementParser;
-
-
 import com.database.GlobalVariables;
 import com.database.Execute;
 import com.database.Iterator.JoinInterface;
@@ -8,14 +6,12 @@ import com.database.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.*;
-
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 public class SqlSelect {
     private final Select sql;
 
@@ -27,7 +23,7 @@ public class SqlSelect {
 
 
         ArrayList<SelectItem> selectItems = (ArrayList<SelectItem>) ((PlainSelect) body).getSelectItems();
-        GlobalVariables.rename = new HashMap<>();
+        GlobalVariables.alias = new HashMap<>();
         for (SelectItem a : selectItems) {
             if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
                 return;
@@ -36,7 +32,7 @@ public class SqlSelect {
             if (alias == null) {
                 s.setAlias(s.getExpression().toString());
             }
-            GlobalVariables.rename.put(s.getAlias(), s.getExpression());
+            GlobalVariables.alias.put(s.getAlias(), s.getExpression());
         }
     }
 

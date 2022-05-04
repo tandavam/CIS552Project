@@ -29,11 +29,11 @@ public class Evaluator extends Eval {
             if (!collection_schema.containsKey(collection + "." + parent_column.getColumnName()))
                 index = change_attribute(index, parent_column.getTable() + "." + parent_column.getColumnName());
             else index = collection_schema.get(collection + "." + parent_column.getColumnName());
-        } else if (!GlobalVariables.rename.containsKey(parent_column.getColumnName()))
+        } else if (!GlobalVariables.alias.containsKey(parent_column.getColumnName()))
             index = change_attribute(index, parent_column.getColumnName());
         else if (collection_schema.containsKey(parent_column.getColumnName())) index = collection_schema.get(parent_column.getColumnName());
-        else if (collection_schema.containsKey(GlobalVariables.rename.get(parent_column.getColumnName()).toString()))
-            index = collection_schema.get(GlobalVariables.rename.get(parent_column.getColumnName()).toString());
+        else if (collection_schema.containsKey(GlobalVariables.alias.get(parent_column.getColumnName()).toString()))
+            index = collection_schema.get(GlobalVariables.alias.get(parent_column.getColumnName()).toString());
         else index = change_attribute(index, parent_column.getColumnName());
         return (PrimitiveValue) tuple[index];
     }
