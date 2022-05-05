@@ -1,9 +1,6 @@
 package com.database.Iterator;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import com.database.GlobalVariables;
 import com.database.StatementParser.Evaluator;
@@ -56,6 +53,7 @@ public class Projection implements JoinInterface {
             SelectItem f = retained_valued.get(i);
             try {
                 SelectExpressionItem e;
+//                System.out.println(Arrays.toString(temp));
                 e = (SelectExpressionItem) f;
                 if (e.getExpression() instanceof Function) {
                     Expression x;

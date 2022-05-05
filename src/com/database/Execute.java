@@ -12,6 +12,7 @@ import net.sf.jsqlparser.statement.select.SelectItem;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class Execute {
             }
             table = operator.getTable();
         }
+//        System.out.println(Arrays.toString(operator))
         if (where != null)
 //            System.out.println(where);
 //            System.out.println(GlobalVariables.show_all_collections);

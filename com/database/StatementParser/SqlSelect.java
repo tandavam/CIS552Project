@@ -1,6 +1,4 @@
 package com.database.StatementParser;
-
-
 import com.database.GlobalVariables;
 import com.database.Execute;
 import com.database.Iterator.JoinInterface;
@@ -8,14 +6,12 @@ import com.database.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.*;
-
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 public class SqlSelect {
     private final Select sql;
 
@@ -27,16 +23,18 @@ public class SqlSelect {
 
 
         ArrayList<SelectItem> selectItems = (ArrayList<SelectItem>) ((PlainSelect) body).getSelectItems();
-        GlobalVariables.rename = new HashMap<>();
+//        System.out.println(selectItems);
+        GlobalVariables.alias = new HashMap<>();
         for (SelectItem a : selectItems) {
-            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
-                return;
+//            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
+//                return;
             SelectExpressionItem s = (SelectExpressionItem) a;
+            System.out.println(selectItems);
             String alias = s.getAlias();
             if (alias == null) {
                 s.setAlias(s.getExpression().toString());
             }
-            GlobalVariables.rename.put(s.getAlias(), s.getExpression());
+            GlobalVariables.alias.put(s.getAlias(), s.getExpression());
         }
     }
 
@@ -64,34 +62,26 @@ public class SqlSelect {
         ArrayList<String> list_of_collections = new ArrayList<>();
         list_of_collections.add(((Table) body.getFromItem()).getName());
         Expression join_function = null;
+        t = new Table();
         if (body.getJoins() != null) {
             for (Join join : body.getJoins()) {
                 if (join.getOnExpression() != null) {
                     join_function = join.getOnExpression();
                 }
-                Table tx = (Table) join.getRightItem();
-                if (list_of_collections.contains(tx.getName())) {
-                    if (tx.getAlias() == null) {
-                        tx.setAlias(String.format("%d", i));
+                Table name = (Table) join.getRightItem();
+//                System.out.println(name);
+                if (list_of_collections.contains(name.getName())) {
+                    if (name.getAlias() == null) {
+                        name.setAlias(String.format("%d", i));
                     }
-                    list_of_collections.add(tx.getName());
+                    list_of_collections.add(name.getName());
                 }
-                rename_table(tx);
-                joins.add(tx);
+                rename_table(name);
+                joins.add(name);
                 i += 1;
             }
         }
         if (body.getFromItem() instanceof SubSelect) {
-
-            t = new Table();
-//            if (body.getFromItem().getAlias() == null) {
-//                t.setName("SubQuery");
-//                t.setAlias("SubQuery");
-//            } else {
-//                t.setName(body.getFromItem().getAlias());
-//                t.setAlias(body.getFromItem().getAlias());
-//            }
-
             create_schema(((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getSelectItems(), t, ((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody()).getFromItem());
             op = get_iterator((PlainSelect) ((SubSelect) body.getFromItem()).getSelectBody());
             op = Execute.select_tree(op,
@@ -123,24 +113,24 @@ public class SqlSelect {
     }
 
     public static void create_schema(List<SelectItem> selectItems, Table collection, FromItem fromItem) {
-        LinkedHashMap<String, Integer> dbSchema = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> schema = new LinkedHashMap<>();
         if ((selectItems.get(0) instanceof AllColumns) || (selectItems.get(0) instanceof AllTableColumns)) {
             Table table = (Table) fromItem;
-            dbSchema = (GlobalVariables.show_all_collections.get(table.getName()));
+            schema = (GlobalVariables.show_all_collections.get(table.getName()));
         } else {
             for (int i = 0; i < selectItems.size(); i++) {
                 SelectExpressionItem alias = (SelectExpressionItem) selectItems.get(i);
                 if (alias.getAlias() != null) {
-                    dbSchema.put(alias.getAlias(), i);
+                    schema.put(alias.getAlias(), i);
                 } else {
-                    dbSchema.put(alias.getExpression().toString(), i);
+                    schema.put(alias.getExpression().toString(), i);
                 }
             }
         }
-        GlobalVariables.show_all_collections.put(collection.getAlias(), dbSchema);
+        GlobalVariables.show_all_collections.put(collection.getAlias(), schema);
     }
 
-    public void get_result() throws SQLException {
+    public void output() throws SQLException {
         SelectBody body = sql.getSelectBody();
         JoinInterface current = null;
         if (body instanceof PlainSelect) {

@@ -7,8 +7,13 @@ import net.sf.jsqlparser.expression.BooleanValue;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
+import net.sf.jsqlparser.parser.CCJSqlParser;
+import net.sf.jsqlparser.parser.ParseException;
 import net.sf.jsqlparser.schema.Table;
+import net.sf.jsqlparser.statement.Statement;
 
+import java.io.Reader;
+import java.io.StringReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +67,7 @@ public class Selection implements JoinInterface {
 //        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getLeftExpression()).toRawString());
 //        System.out.println((((BooleanValue) evaluator.eval(((EqualsTo)abc_.getLeftExpression()))).getValue()));
 //        System.out.println("****");
+
 //        System.out.println(schema);
         while (true) {
             if (row == null) break;

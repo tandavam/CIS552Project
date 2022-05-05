@@ -1,6 +1,4 @@
 package com.database.StatementParser;
-
-
 import com.database.GlobalVariables;
 import com.database.Execute;
 import com.database.Iterator.JoinInterface;
@@ -8,14 +6,12 @@ import com.database.Iterator.Scanner;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.schema.Table;
 import net.sf.jsqlparser.statement.select.*;
-
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 public class SqlSelect {
     private final Select sql;
 
@@ -27,16 +23,18 @@ public class SqlSelect {
 
 
         ArrayList<SelectItem> selectItems = (ArrayList<SelectItem>) ((PlainSelect) body).getSelectItems();
-        GlobalVariables.rename = new HashMap<>();
+//        System.out.println(selectItems);
+        GlobalVariables.alias = new HashMap<>();
         for (SelectItem a : selectItems) {
-            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
-                return;
+//            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
+//                return;
             SelectExpressionItem s = (SelectExpressionItem) a;
+            System.out.println(selectItems);
             String alias = s.getAlias();
             if (alias == null) {
                 s.setAlias(s.getExpression().toString());
             }
-            GlobalVariables.rename.put(s.getAlias(), s.getExpression());
+            GlobalVariables.alias.put(s.getAlias(), s.getExpression());
         }
     }
 
@@ -70,15 +68,16 @@ public class SqlSelect {
                 if (join.getOnExpression() != null) {
                     join_function = join.getOnExpression();
                 }
-                Table tx = (Table) join.getRightItem();
-                if (list_of_collections.contains(tx.getName())) {
-                    if (tx.getAlias() == null) {
-                        tx.setAlias(String.format("%d", i));
+                Table name = (Table) join.getRightItem();
+//                System.out.println(name);
+                if (list_of_collections.contains(name.getName())) {
+                    if (name.getAlias() == null) {
+                        name.setAlias(String.format("%d", i));
                     }
-                    list_of_collections.add(tx.getName());
+                    list_of_collections.add(name.getName());
                 }
-                rename_table(tx);
-                joins.add(tx);
+                rename_table(name);
+                joins.add(name);
                 i += 1;
             }
         }
