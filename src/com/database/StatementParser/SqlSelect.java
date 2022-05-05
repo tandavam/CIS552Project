@@ -23,11 +23,13 @@ public class SqlSelect {
 
 
         ArrayList<SelectItem> selectItems = (ArrayList<SelectItem>) ((PlainSelect) body).getSelectItems();
+//        System.out.println(selectItems);
         GlobalVariables.alias = new HashMap<>();
         for (SelectItem a : selectItems) {
-            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
-                return;
+//            if ((a instanceof AllTableColumns) || (a instanceof AllColumns))
+//                return;
             SelectExpressionItem s = (SelectExpressionItem) a;
+            System.out.println(selectItems);
             String alias = s.getAlias();
             if (alias == null) {
                 s.setAlias(s.getExpression().toString());
@@ -66,15 +68,16 @@ public class SqlSelect {
                 if (join.getOnExpression() != null) {
                     join_function = join.getOnExpression();
                 }
-                Table tx = (Table) join.getRightItem();
-                if (list_of_collections.contains(tx.getName())) {
-                    if (tx.getAlias() == null) {
-                        tx.setAlias(String.format("%d", i));
+                Table name = (Table) join.getRightItem();
+//                System.out.println(name);
+                if (list_of_collections.contains(name.getName())) {
+                    if (name.getAlias() == null) {
+                        name.setAlias(String.format("%d", i));
                     }
-                    list_of_collections.add(tx.getName());
+                    list_of_collections.add(name.getName());
                 }
-                rename_table(tx);
-                joins.add(tx);
+                rename_table(name);
+                joins.add(name);
                 i += 1;
             }
         }
