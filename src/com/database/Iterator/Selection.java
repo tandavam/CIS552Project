@@ -2,13 +2,18 @@ package com.database.Iterator;
 
 
 import com.database.StatementParser.Evaluator;
+import net.sf.jsqlparser.expression.BinaryExpression;
 import net.sf.jsqlparser.expression.BooleanValue;
 import net.sf.jsqlparser.expression.Expression;
+import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
+import net.sf.jsqlparser.expression.operators.relational.EqualsTo;
 import net.sf.jsqlparser.schema.Table;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Selection implements JoinInterface {
@@ -36,11 +41,22 @@ public class Selection implements JoinInterface {
         row = op.next();
         Evaluator evaluator;
         evaluator = new Evaluator(schema, row);
+        List<Boolean> flags = new ArrayList<>();
+
+//        System.out.println(condition.toString());
+
 //        System.out.println(Arrays.toString(row));
 //        AndExpression abc = (AndExpression) condition;
 //        AndExpression abc_ = (AndExpression) abc.getLeftExpression();
-
-//        System.out.println(((EqualsTo)abc_.getLeftExpression()).getLeftExpression());
+//        Expression abc_2 = (Expression) abc_.getLeftExpression();
+//        BinaryExpression abc_1 = (BinaryExpression) abc.getRightExpression();
+////
+//        System.out.println(abc.toString());
+//        System.out.println(abc_.toString());
+//        System.out.println(abc_2.toString());
+//        System.out.println(abc_1.toString());
+//
+////        System.out.println(((EqualsTo)abc_.getLeftExpression()).getLeftExpression());
 //        System.out.println("****");
 //        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getRightExpression()).toRawString());
 //        System.out.println(evaluator.eval(((EqualsTo)abc_.getLeftExpression()).getLeftExpression()).toRawString());
@@ -48,10 +64,55 @@ public class Selection implements JoinInterface {
 //        System.out.println("****");
 //        System.out.println(schema);
         while (true) {
-//            System.out.println(this.condition);
             if (row == null) break;
-//            System.out.println((((BooleanValue) evaluator.eval(condition)).getValue()));
-            if (((BooleanValue) evaluator.eval(condition)).getValue()) {
+
+            int numberOfConditions = condition.toString().split("AND", 0).length;
+            if (numberOfConditions > 2){
+                AndExpression temp = (AndExpression) condition;
+
+                while(temp.getLeftExpression() instanceof AndExpression){
+                    flags.add(((BooleanValue) evaluator.eval(temp.getLeftExpression())).getValue());
+
+                    flags.add(((BooleanValue) evaluator.eval(temp.getRightExpression())).getValue());
+
+
+                    try{
+                        temp = (AndExpression) temp.getLeftExpression();
+                    } catch (Exception e){
+//                        row = op.next();
+//                        evaluator.setTuple(row);
+//                        continue;
+                    }
+
+                }
+                flags.add(((BooleanValue) evaluator.eval(temp)).getValue());
+
+//                System.out.println(flags.toString());
+                Boolean flag = true;
+                for(boolean b : flags){
+//                    System.out.println(b);
+                    if(!b){
+                        flag = false;
+                        break;
+                    }
+                }
+
+//                for (int i = 0; i < numberOfConditions - 2; i++){
+//                    flags.add(((BooleanValue) evaluator.eval(temp.getLeftExpression())).getValue());
+//
+//                    temp = (AndExpression) temp.getLeftExpression();
+//                    flags.add(((BooleanValue) evaluator.eval(temp.getRightExpression())).getValue());
+//                    for(boolean b : flags) if(!b) return null;
+//                }
+//                System.out.println(flags.toString());
+                flags = new ArrayList<Boolean>();
+
+                if (flag){
+//                    System.out.println(condition.toString());
+                    return row;
+                }
+
+            } else if (((BooleanValue) evaluator.eval(condition)).getValue()) {
 //                System.out.println("****");
 //                System.out.println(row);
                 return row;
