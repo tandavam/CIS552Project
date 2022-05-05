@@ -41,7 +41,6 @@ public class Main {
         CCJSqlParser parser = new CCJSqlParser(input);
 //        System.out.println(parser);
         Statement statement = parser.Statement();
-//        System.out.println(statement);
         statement.accept(new QueryParser());
     }
 }
